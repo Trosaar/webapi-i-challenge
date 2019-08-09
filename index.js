@@ -14,7 +14,7 @@ const port = 4000;
 server.use(express.json());
 
 // When the client makes a `GET` request to `/api/users`:
-server.get('/users', (req, res) =>{
+server.get('/users', (req, res) => {
   //datatype
   //status code
   //responce
@@ -31,12 +31,13 @@ server.get('/users', (req, res) =>{
 
 // When the client makes a `POST` request to `/api/users`:
 server.post('/users', (req, res) => {
-  const { name, bio } = req.params;
+  const { name, bio } = req.body;
 
-  db.insert(name, bio)
-  .then(created => {
-    if(created){
-      res.satus(201).json(created)
+  db.insert({name, bio})
+  .then((id) => {
+    if(id){
+      console.log(created);
+      res.status(201).json({id})
     } else {
       res.status(400).json({
         errorMessage: 'Please provide name and bio for the user.'
@@ -52,7 +53,7 @@ server.post('/users', (req, res) => {
 
 // When the client makes a `GET` request to `/api/users/:id`:
 server.get('/users/:id', (req, res) =>{
-  const { id } = req.params;
+  const { id } = req.body;
 
   db.findById(id)
   .then(obj => {
@@ -73,7 +74,7 @@ server.get('/users/:id', (req, res) =>{
 
 // When the client makes a `DELETE` request to `/api/users/:id`:
 server.delete('/users/:id', (req, res) =>{
-  const { id } = req.params;
+  const { id } = req.body;
 
   db.remove(id)
   .then(obj => {
@@ -94,7 +95,7 @@ server.delete('/users/:id', (req, res) =>{
 
 // When the client makes a `PUT` request to `/api/users/:id`:
 server.put('/users/:id', (req, res) =>{
-  const { id } = req.params;
+  const { id } = req.body;
 
   db.update(id)
   .then(obj => {
